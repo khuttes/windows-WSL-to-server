@@ -1,0 +1,23 @@
+[Unit]
+Description=Home server dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=homedash
+Group=homedash
+WorkingDirectory=/opt/homedash
+Environment=HOMEDASH_CONFIG=/etc/homedash/config.json
+Environment=HOMEDASH_POLICY=/var/lib/homedash/policy.json
+Environment=HOMEDASH_TASKS=/opt/homedash/tasks
+Environment=HOMEDASH_COOKIE_SECURE=1
+ExecStart=/opt/homedash/venv/bin/gunicorn --workers 1 --threads 4 --bind 127.0.0.1:8080 --access-logfile - --error-logfile - app:create_app()
+Restart=on-failure
+RestartSec=3
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/etc/cron.d /etc/systemd/system.control
+
+[Install]
+WantedBy=multi-user.target

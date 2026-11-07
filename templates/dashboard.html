@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Home server dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='dashboard.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div><p class="eyebrow">HOME SERVER</p><h1>Dashboard</h1></div>
+    <form method="post" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="secondary" type="submit">Sign out</button>
+    </form>
+  </header>
+  <main class="layout">
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">SYSTEM</p><h2>Live status</h2></div><span id="refresh-state">Refreshing every 5 seconds</span></div>
+      <div id="status-message" class="notice" role="status">Loading status…</div>
+      <dl class="metrics">
+        <div><dt>Uptime</dt><dd id="uptime">—</dd></div>
+        <div><dt>CPU</dt><dd id="cpu">—</dd></div>
+        <div><dt>Memory</dt><dd id="memory">—</dd></div>
+        <div><dt>Disk</dt><dd id="disk">—</dd></div>
+      </dl>
+      <h3>Managed services</h3>
+      <ul id="services" class="service-list"><li>Loading…</li></ul>
+    </section>
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">CONFIGURATION</p><h2>Policy</h2></div></div>
+      <p class="help">Edit the JSON policy, save it, then apply it. Applying uses the restricted system helper.</p>
+      <label class="sr-only" for="policy">Policy JSON</label>
+      <textarea id="policy" spellcheck="false">{{ policy | tojson(indent=2) }}</textarea>
+      <div class="actions">
+        <button id="save-policy" type="button">Save policy</button>
+        <button id="apply-policy" class="secondary" type="button">Apply policy</button>
+      </div>
+      <div id="policy-message" class="notice" role="status"></div>
+    </section>
+  </main>
+</body>
+</html>

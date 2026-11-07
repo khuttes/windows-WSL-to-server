@@ -1,0 +1,1 @@
+homedash ALL=(root) NOPASSWD: /usr/local/sbin/homedash-apply
